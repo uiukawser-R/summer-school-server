@@ -7,6 +7,17 @@ const stripe = require('stripe')(process.env.PAYMENT_SECRET_KEY)
 const port = process.env.PORT || 5000;
 
 app.use(cors());
+
+
+// const corsConfig = {
+//   origin: '',
+//   credentials: true,
+//   methods: ['GET', 'POST', 'PUT', 'DELETE']
+// }
+// app.use(cors(corsConfig))
+// app.options("", cors(corsConfig))
+
+
 app.use(express.json());
 
 
@@ -31,39 +42,44 @@ const verifyJWT = (req, res, next) => {
 
 
 const { MongoClient, ServerApiVersion, MongoAWSError, ObjectId } = require('mongodb');
-const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.opp4yua.mongodb.net/?retryWrites=true&w=majority`;
+
+
+
+//const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.opp4yua.mongodb.net/?retryWrites=true&w=majority`;
+const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.o016lri.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
+
+const client = new MongoClient(uri, {
+  serverApi: {
+    version: ServerApiVersion.v1,
+    strict: true,
+    deprecationErrors: true,
+  }
+});
+
 // const client = new MongoClient(uri, {
 //   serverApi: {
 //     version: ServerApiVersion.v1,
 //     strict: true,
 //     deprecationErrors: true,
-//   }
+//   },
+//   useNewUrlParser:true,
+//   userUnifiedTopology:true,
+//   maxPoolSize:10,
 // });
 
-const client= new MongoClient(uri,{
-  serverApi:{
-    version: ServerApiVersion.v1,
-    strict:true,
-    deprecationErrors: true,
-  },
-  useNewUrlParser:true,
-  userUnifiedTopology:true,
-  maxPoolSize:10,
-});
+ 
 
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
     // await client.connect();
 
-    client.connect((err)={
-      if(err){
-        console.log(err);
-        return;
-      }
-    });
+    // client.connect((err)=>{
+    //   console.log(err);
+    //   return;
+    // })
 
 
     // const classCollection = client.db("schoolDB").collection("class");
